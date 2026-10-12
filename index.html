@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <!-- Primary SEO Tags -->
     <title>CodeForge - Free Online Compiler & IDE for C++, Python, Java</title>
     <meta name="title" content="CodeForge - Free Online Compiler & IDE for C++, Python, Java">
     <meta name="description" content="Run C++, Python, Java, C, and JS code online instantly with CodeForge Studio. Lightweight, mobile-friendly online compiler and code editor with fast execution.">
@@ -12,7 +11,6 @@
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://rameshwarkharade001-byte.github.io/online-compiler/">
 
-    <!-- Open Graph / Facebook / WhatsApp Preview -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://rameshwarkharade001-byte.github.io/online-compiler/">
     <meta property="og:title" content="CodeForge - Fast Online Code Compiler">
@@ -34,36 +32,43 @@
             --text-muted: #8492a6;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-        body {
+        html, body {
+            width: 100%;
+            height: 100%;
             background-color: var(--bg-body);
             color: var(--text-main);
             font-family: 'Plus Jakarta Sans', sans-serif;
-            height: 100vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
 
         header {
+            width: 100%;
             background: rgba(13, 17, 28, 0.95);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border);
-            padding: 10px 16px;
+            padding: 8px 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
+            gap: 8px;
             z-index: 10;
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 1.1rem;
+            gap: 6px;
+            font-size: 0.95rem;
             font-weight: 800;
+            white-space: nowrap;
         }
 
         .brand i { color: #818cf8; }
@@ -78,9 +83,9 @@
             background: #141a29;
             color: #fff;
             border: 1px solid var(--border);
-            padding: 6px 10px;
-            border-radius: 8px;
-            font-size: 0.85rem;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
             outline: none;
         }
 
@@ -88,27 +93,29 @@
             background: #141a29;
             color: var(--text-muted);
             border: 1px solid var(--border);
-            padding: 6px 9px;
-            border-radius: 8px;
+            padding: 5px 8px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
         .btn-run {
             background: var(--run-gradient);
             color: white;
             border: none;
-            padding: 7px 16px;
-            border-radius: 8px;
+            padding: 6px 14px;
+            border-radius: 6px;
             font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 0.88rem;
+            font-size: 0.82rem;
+            white-space: nowrap;
         }
 
         #top-ad-zone {
+            width: 100%;
             background: #090c14;
             display: flex;
             align-items: center;
@@ -118,6 +125,7 @@
         }
 
         .workspace {
+            width: 100%;
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -126,9 +134,10 @@
         }
 
         .editor-header {
+            width: 100%;
             background: #0b0f19;
-            padding: 6px 14px;
-            font-size: 0.78rem;
+            padding: 6px 12px;
+            font-size: 0.75rem;
             font-weight: 600;
             color: var(--text-muted);
             border-bottom: 1px solid var(--border);
@@ -137,21 +146,32 @@
             justify-content: space-between;
         }
 
-        #editor {
-            flex: 1;
+        #editor-container {
             width: 100%;
-            height: 100%;
+            flex: 1;
+            position: relative;
+        }
+
+        #editor {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100% !important;
+            height: 100% !important;
             font-family: 'Fira Code', monospace;
             font-size: 14.5px;
         }
 
         .stdin-drawer {
+            width: 100%;
             background: #0b0f19;
             border-top: 1px solid var(--border);
-            padding: 6px 14px;
+            padding: 6px 12px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .stdin-drawer input {
@@ -307,12 +327,15 @@
         <script type="text/javascript" src="https://www.highrevenueformat.com/e2fb0481067ecb77e9c1a9e148e65c71/invoke.js"></script>
     </div>
 
+    <!-- Workspace -->
     <div class="workspace">
         <div class="editor-header">
             <span id="currentLangTitle">PYTHON 3 RUNTIME</span>
             <span style="color:#818cf8; font-size:11px;">VS Code Engine</span>
         </div>
-        <div id="editor"></div>
+        <div id="editor-container">
+            <div id="editor"></div>
+        </div>
 
         <div class="stdin-drawer">
             <span style="font-size: 0.8rem; color: #94a3b8;"><i class="fa-solid fa-keyboard"></i> STDIN:</span>
@@ -320,6 +343,7 @@
         </div>
     </div>
 
+    <!-- Output Overlay -->
     <div id="outputOverlay">
         <div class="terminal-top-bar">
             <span><i class="fa-solid fa-terminal" style="color: #10b981;"></i> Output Result</span>
@@ -369,6 +393,12 @@
         editor.setValue(languages.python.code, 1);
         editor.setShowPrintMargin(false);
 
+        // Auto resize listener
+        window.addEventListener('resize', () => {
+            editor.resize();
+        });
+        setTimeout(() => { editor.resize(); }, 300);
+
         const langSelect = document.getElementById("langSelect");
         const currentLangTitle = document.getElementById("currentLangTitle");
         const outputOverlay = document.getElementById("outputOverlay");
@@ -392,6 +422,7 @@
 
         function closeTerminal() {
             outputOverlay.style.display = "none";
+            setTimeout(() => { editor.resize(); }, 100);
         }
 
         async function executeProgram() {
