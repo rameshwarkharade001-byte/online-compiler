@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeForge Studio - Next-Gen Multi-Language IDE</title>
+    <title>CodeForge Studio - Online Compiler</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ace.js"></script>
@@ -15,7 +15,6 @@
             --bg-card: #0d111c;
             --border: #1e2638;
             --primary: #6366f1;
-            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
             --run-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
             --text-main: #f8fafc;
             --text-muted: #8492a6;
@@ -37,7 +36,6 @@
             overflow: hidden;
         }
 
-        /* TOP NAVIGATION */
         header {
             background: rgba(13, 17, 28, 0.95);
             backdrop-filter: blur(10px);
@@ -56,13 +54,11 @@
             gap: 10px;
             font-size: 1.15rem;
             font-weight: 800;
-            letter-spacing: -0.02em;
         }
 
         .brand i {
             color: #818cf8;
             font-size: 1.25rem;
-            filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.5));
         }
 
         .nav-actions {
@@ -82,11 +78,6 @@
             font-family: inherit;
             cursor: pointer;
             outline: none;
-            transition: all 0.2s;
-        }
-
-        select:focus {
-            border-color: #6366f1;
         }
 
         .btn-action {
@@ -96,13 +87,7 @@
             padding: 7px 11px;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s;
             font-size: 0.88rem;
-        }
-
-        .btn-action:hover {
-            color: #fff;
-            border-color: #3f4d6d;
         }
 
         .btn-run {
@@ -118,35 +103,19 @@
             gap: 8px;
             font-size: 0.9rem;
             box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
-            transition: all 0.25s ease;
         }
 
-        .btn-run:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
-        }
-
-        /* AD CONTAINERS */
-        .ad-slot-box {
+        /* 320x50 Banner Slot */
+        #top-ad-zone {
             background: #090c14;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            text-align: center;
-        }
-
-        #top-ad-zone {
             min-height: 52px;
             border-bottom: 1px solid var(--border);
+            overflow: hidden;
         }
 
-        #bottom-ad-zone {
-            min-height: 52px;
-            border-top: 1px solid var(--border);
-        }
-
-        /* MAIN EDITOR WORKSPACE */
         .workspace {
             flex: 1;
             display: flex;
@@ -173,7 +142,6 @@
             padding: 2px 8px;
             border-radius: 5px;
             font-size: 0.72rem;
-            letter-spacing: 0.05em;
         }
 
         #editor {
@@ -184,7 +152,6 @@
             font-size: 14.5px;
         }
 
-        /* PROGRAM INPUT DRAWER (COLLAPSIBLE / STDIN) */
         .stdin-drawer {
             background: #0b0f19;
             border-top: 1px solid var(--border);
@@ -206,24 +173,18 @@
             outline: none;
         }
 
-        /* ================= OVERLAY RUN TERMINAL (NEW SCREEN) ================= */
+        /* Output Modal Terminal */
         #outputOverlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(4, 6, 12, 0.95);
+            background: rgba(4, 6, 12, 0.96);
             backdrop-filter: blur(14px);
             z-index: 9999;
             display: none;
             flex-direction: column;
-            animation: fadeIn 0.25s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
         }
 
         .overlay-header {
@@ -243,12 +204,6 @@
             font-weight: 700;
         }
 
-        .terminal-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
         .btn-close-terminal {
             background: #ef4444;
             color: #fff;
@@ -265,10 +220,13 @@
 
         .overlay-ad-slot {
             background: #07090f;
-            padding: 8px;
+            padding: 10px;
             text-align: center;
             border-bottom: 1px solid var(--border);
-            min-height: 60px;
+            min-height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .terminal-body {
@@ -293,20 +251,13 @@
             justify-content: space-between;
         }
 
-        .status-badge-ok {
-            color: #10b981;
-            font-weight: 600;
-        }
-
-        .status-badge-err {
-            color: #ef4444;
-            font-weight: 600;
-        }
+        .status-badge-ok { color: #10b981; font-weight: 600; }
+        .status-badge-err { color: #ef4444; font-weight: 600; }
     </style>
 </head>
 <body>
 
-    <!-- Top Header -->
+    <!-- Header Navigation -->
     <header>
         <div class="brand">
             <i class="fa-solid fa-code"></i> CodeForge Studio
@@ -326,9 +277,9 @@
                 <option value="kotlin">Kotlin (1.3)</option>
             </select>
 
-            <button class="btn-action" onclick="adjustFontSize(1)" title="Zoom In"><i class="fa-solid fa-plus"></i></button>
-            <button class="btn-action" onclick="adjustFontSize(-1)" title="Zoom Out"><i class="fa-solid fa-minus"></i></button>
-            <button class="btn-action" onclick="copySourceCode()" title="Copy Code"><i class="fa-regular fa-copy"></i></button>
+            <button class="btn-action" onclick="adjustFontSize(1)"><i class="fa-solid fa-plus"></i></button>
+            <button class="btn-action" onclick="adjustFontSize(-1)"><i class="fa-solid fa-minus"></i></button>
+            <button class="btn-action" onclick="copySourceCode()"><i class="fa-regular fa-copy"></i></button>
 
             <!-- Run Button -->
             <button id="runBtn" class="btn-run" onclick="executeProgram()">
@@ -337,13 +288,21 @@
         </div>
     </header>
 
-    <!-- 1. TOP BANNER AD SLOT -->
-    <div id="top-ad-zone" class="ad-slot-box">
-        <!-- [PASTE TOP BANNER AD CODE HERE] -->
-        <span style="color:#475569; font-size:12px;">Top Banner Advertisement Space</span>
+    <!-- 1. TOP BANNER AD (320x50 Adsterra) -->
+    <div id="top-ad-zone">
+        <script type="text/javascript">
+            atOptions = {
+                'key' : 'e2fb0481067ecb77e9c1a9e148e65c71',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 320,
+                'params' : {}
+            };
+        </script>
+        <script type="text/javascript" src="https://www.highrevenueformat.com/e2fb0481067ecb77e9c1a9e148e65c71/invoke.js"></script>
     </div>
 
-    <!-- Main Code Editor -->
+    <!-- Main Workspace -->
     <div class="workspace">
         <div class="editor-header">
             <span id="currentLangTitle">PYTHON 3 RUNTIME</span>
@@ -351,35 +310,28 @@
         </div>
         <div id="editor"></div>
 
-        <!-- STDIN Drawer (Input box) -->
         <div class="stdin-drawer">
             <span style="font-size: 0.8rem; color: #94a3b8;"><i class="fa-solid fa-keyboard"></i> STDIN Input:</span>
-            <input type="text" id="stdinInput" placeholder="If program needs input (cin / input), type here before running...">
+            <input type="text" id="stdinInput" placeholder="If program needs input, type here...">
         </div>
     </div>
 
-    <!-- 2. BOTTOM BANNER AD SLOT -->
-    <div id="bottom-ad-zone" class="ad-slot-box">
-        <!-- [PASTE BOTTOM BANNER AD CODE HERE] -->
-        <span style="color:#475569; font-size:12px;">Bottom Banner Advertisement Space</span>
-    </div>
-
-    <!-- ================= 3. SEPARATE FULLSCREEN OUTPUT TERMINAL ================= -->
+    <!-- 2. FULLSCREEN OUTPUT TERMINAL SCREEN -->
     <div id="outputOverlay">
         <div class="overlay-header">
             <div class="overlay-title">
                 <i class="fa-solid fa-terminal" style="color: #10b981;"></i> Execution Console & Terminal
             </div>
-            <div class="terminal-actions">
+            <div>
                 <button class="btn-action" onclick="copyConsoleOutput()"><i class="fa-regular fa-copy"></i> Copy Output</button>
                 <button class="btn-close-terminal" onclick="closeTerminal()"><i class="fa-solid fa-xmark"></i> Back to Code</button>
             </div>
         </div>
 
-        <!-- HIGH REVENUE AD INSIDE THE RUN SCREEN -->
+        <!-- 3. NATIVE BANNER AD (RUN SCREEN) -->
         <div class="overlay-ad-slot">
-            <!-- [PASTE HIGH CPM BANNER / VIDEO AD CODE HERE] -->
-            <span style="color:#64748b; font-size:12px;">Terminal Sponsored Ad Area (High Revenue Slot)</span>
+            <script async="async" data-cfasync="false" src="https://pl20790894.profitableratecpmnetwork.com/aa092d5a405faa2160549129cab4e19a/invoke.js"></script>
+            <div id="container-aa092d5a405faa2160549129cab4e19a"></div>
         </div>
 
         <pre id="terminalOutput" class="terminal-body">Compiling and executing code...</pre>
@@ -390,19 +342,22 @@
         </div>
     </div>
 
+    <!-- 4. SOCIAL BAR AD (Adsterra) -->
+    <script src="https://pl20790893.profitableratecpmnetwork.com/e0/d9/e1/e0d9e140d2a95360f9f664cd9cdffcc54.js"></script>
+
     <!-- Logic Script -->
     <script>
         const languages = {
-            python: { id: 71, mode: "ace/mode/python", code: `# Python 3 Online Demo\nprint("================================")\nprint("      CodeForge Execution       ")\nprint("================================")\n\nfor i in range(1, 6):\n    print(f"Step {i}: Success!")\n` },
-            cpp: { id: 54, mode: "ace/mode/c_cpp", code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "================================" << endl;\n    cout << "   C++ Compiler Output Ready    " << endl;\n    cout << "================================" << endl;\n    for(int i = 1; i <= 5; i++) {\n        cout << "Iteration: " << i << endl;\n    }\n    return 0;\n}\n` },
+            python: { id: 71, mode: "ace/mode/python", code: `# Python 3 Online Demo\nprint("Hello World!")\nfor i in range(1, 6):\n    print(f"Step {i}: Success!")\n` },
+            cpp: { id: 54, mode: "ace/mode/c_cpp", code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "C++ Compiler Output Ready!" << endl;\n    return 0;\n}\n` },
             c: { id: 50, mode: "ace/mode/c_cpp", code: `#include <stdio.h>\n\nint main() {\n    printf("Standard C System Output!\\n");\n    return 0;\n}\n` },
-            java: { id: 62, mode: "ace/mode/java", code: `public class Main {\n    public static void main(String[] args) {\n        System.out.println("Java 13 Virtual Machine Executed Successfully!");\n    }\n}\n` },
-            javascript: { id: 63, mode: "ace/mode/javascript", code: `console.log("JavaScript Execution Finished!");\nconst items = [10, 20, 30];\nconsole.log("Total:", items.reduce((a, b) => a + b, 0));\n` },
-            csharp: { id: 51, mode: "ace/mode/csharp", code: `using System;\nclass MainClass {\n    static void Main() {\n        Console.WriteLine("C# Runtime Active!");\n    }\n}\n` },
-            go: { id: 60, mode: "ace/mode/golang", code: `package main\nimport "fmt"\n\nfunc main() {\n    fmt.Println("Go Runtime Active & Fast!");\n}\n` },
-            rust: { id: 73, mode: "ace/mode/rust", code: `fn main() {\n    println!("Rust Safe Execution Complete!");\n}\n` },
-            php: { id: 68, mode: "ace/mode/php", code: `<?php echo "PHP Engine Active!\\n"; ?>\n` },
-            kotlin: { id: 78, mode: "ace/mode/kotlin", code: `fun main() {\n    println("Kotlin Multiplatform Ready!");\n}\n` }
+            java: { id: 62, mode: "ace/mode/java", code: `public class Main {\n    public static void main(String[] args) {\n        System.out.println("Java Environment Active!");\n    }\n}\n` },
+            javascript: { id: 63, mode: "ace/mode/javascript", code: `console.log("JavaScript Execution Finished!");\n` },
+            csharp: { id: 51, mode: "ace/mode/csharp", code: `using System;\nclass MainClass {\n    static void Main() {\n        Console.WriteLine("C# Active!");\n    }\n}\n` },
+            go: { id: 60, mode: "ace/mode/golang", code: `package main\nimport "fmt"\n\nfunc main() {\n    fmt.Println("Go Runtime Active!");\n}\n` },
+            rust: { id: 73, mode: "ace/mode/rust", code: `fn main() {\n    println!("Rust Active!");\n}\n` },
+            php: { id: 68, mode: "ace/mode/php", code: `<?php echo "PHP Active!\\n"; ?>\n` },
+            kotlin: { id: 78, mode: "ace/mode/kotlin", code: `fun main() {\n    println("Kotlin Active!");\n}\n` }
         };
 
         const editor = ace.edit("editor");
@@ -417,7 +372,6 @@
         const terminalOutput = document.getElementById("terminalOutput");
         const terminalStatusMsg = document.getElementById("terminalStatusMsg");
         const execDuration = document.getElementById("execDuration");
-        const runBtn = document.getElementById("runBtn");
 
         langSelect.addEventListener("change", () => {
             const lang = languages[langSelect.value];
@@ -436,28 +390,26 @@
 
         function copySourceCode() {
             navigator.clipboard.writeText(editor.getValue());
-            alert("Source code copied to clipboard!");
+            alert("Code copied!");
         }
 
         function copyConsoleOutput() {
             navigator.clipboard.writeText(terminalOutput.innerText);
-            alert("Console output copied!");
+            alert("Output copied!");
         }
 
         function closeTerminal() {
             outputOverlay.style.display = "none";
         }
 
-        // ================= RUN CODE & OPEN NEW TERMINAL SCREEN ================= //
         async function executeProgram() {
             const currentLang = languages[langSelect.value];
             const code = editor.getValue();
             const stdin = document.getElementById("stdinInput").value;
 
-            // १. ताबडतोब नवीन स्क्रीन (Fullscreen Terminal Overlay) उघडा
             outputOverlay.style.display = "flex";
             terminalOutput.style.color = "#38bdf8";
-            terminalOutput.innerText = "Connecting to Linux compilation cluster...\nCompiling code and fetching output...\n";
+            terminalOutput.innerText = "Connecting to compiler cluster...\nCompiling code and fetching output...\n";
             terminalStatusMsg.innerHTML = '<span style="color:#eab308;">Status: Running...</span>';
             execDuration.innerText = "Measuring...";
 
@@ -481,22 +433,22 @@
                 if (data.stdout) {
                     terminalOutput.style.color = "#38bdf8";
                     terminalOutput.innerText = data.stdout;
-                    terminalStatusMsg.innerHTML = '<span class="status-badge-ok">Process Finished: Exit Code 0 (Success)</span>';
+                    terminalStatusMsg.innerHTML = '<span class="status-badge-ok">Process Finished (Success)</span>';
                 } else if (data.stderr) {
                     terminalOutput.style.color = "#f87171";
                     terminalOutput.innerText = data.stderr;
-                    terminalStatusMsg.innerHTML = '<span class="status-badge-err">Process Finished: Runtime Error</span>';
+                    terminalStatusMsg.innerHTML = '<span class="status-badge-err">Runtime Error</span>';
                 } else if (data.compile_output) {
                     terminalOutput.style.color = "#f87171";
                     terminalOutput.innerText = data.compile_output;
-                    terminalStatusMsg.innerHTML = '<span class="status-badge-err">Process Finished: Compilation Failed</span>';
+                    terminalStatusMsg.innerHTML = '<span class="status-badge-err">Compilation Failed</span>';
                 } else {
                     terminalOutput.innerText = data.status ? data.status.description : "Finished";
                     terminalStatusMsg.innerHTML = '<span class="status-badge-ok">Execution Complete</span>';
                 }
             } catch (err) {
                 terminalOutput.style.color = "#f87171";
-                terminalOutput.innerText = "Network Error: Could not connect to runner engine.\n" + err.message;
+                terminalOutput.innerText = "Network Error: " + err.message;
                 terminalStatusMsg.innerHTML = '<span class="status-badge-err">Connection Error</span>';
             }
         }
