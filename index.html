@@ -3,7 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeForge Studio - Online Compiler</title>
+    
+    <!-- Primary SEO Tags -->
+    <title>CodeForge - Free Online Compiler & IDE for C++, Python, Java</title>
+    <meta name="title" content="CodeForge - Free Online Compiler & IDE for C++, Python, Java">
+    <meta name="description" content="Run C++, Python, Java, C, and JS code online instantly with CodeForge Studio. Lightweight, mobile-friendly online compiler and code editor with fast execution.">
+    <meta name="keywords" content="online compiler, python online compiler, c++ online compiler, run code online, mobile compiler, java online compiler, free code editor">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://rameshwarkharade001-byte.github.io/online-compiler/">
+
+    <!-- Open Graph / Facebook / WhatsApp Preview -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://rameshwarkharade001-byte.github.io/online-compiler/">
+    <meta property="og:title" content="CodeForge - Fast Online Code Compiler">
+    <meta property="og:description" content="Run Python, C++, Java and more directly in your browser. Mobile friendly and blazing fast.">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.7/ace.js"></script>
@@ -20,11 +34,7 @@
             --text-muted: #8492a6;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             background-color: var(--bg-body);
@@ -56,9 +66,7 @@
             font-weight: 800;
         }
 
-        .brand i {
-            color: #818cf8;
-        }
+        .brand i { color: #818cf8; }
 
         .nav-actions {
             display: flex;
@@ -158,7 +166,6 @@
             outline: none;
         }
 
-        /* ===== COMPLETELY SAFE FULLSCREEN TERMINAL ===== */
         #outputOverlay {
             position: fixed;
             inset: 0;
@@ -187,7 +194,7 @@
             display: flex;
             flex-direction: column;
             gap: 14px;
-            padding-bottom: 90px; /* जागा रिकामी ठेवली बटनासाठी */
+            padding-bottom: 90px;
         }
 
         .terminal-box {
@@ -223,7 +230,6 @@
             overflow: hidden;
         }
 
-        /* FLOATING FOOTER CLOSE BUTTON - NEVER GETS OVERLAPPED */
         .floating-footer-action {
             position: fixed;
             bottom: 0;
@@ -254,7 +260,6 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            letter-spacing: 0.03em;
         }
     </style>
 </head>
@@ -302,7 +307,6 @@
         <script type="text/javascript" src="https://www.highrevenueformat.com/e2fb0481067ecb77e9c1a9e148e65c71/invoke.js"></script>
     </div>
 
-    <!-- Workspace -->
     <div class="workspace">
         <div class="editor-header">
             <span id="currentLangTitle">PYTHON 3 RUNTIME</span>
@@ -316,7 +320,6 @@
         </div>
     </div>
 
-    <!-- FULLSCREEN OUTPUT TERMINAL OVERLAY -->
     <div id="outputOverlay">
         <div class="terminal-top-bar">
             <span><i class="fa-solid fa-terminal" style="color: #10b981;"></i> Output Result</span>
@@ -324,13 +327,11 @@
         </div>
 
         <div class="terminal-scroll-area">
-            <!-- 1. Real Output Text -->
             <div class="terminal-box">
                 <div class="terminal-title">Console Output:</div>
                 <pre id="terminalOutput">Compiling...</pre>
             </div>
 
-            <!-- 2. Native Banner Ad inside controlled box -->
             <div class="ad-container-box">
                 <div style="font-size: 10px; color: #64748b; margin-bottom: 4px;">SPONSORED</div>
                 <script async="async" data-cfasync="false" src="https://pl20790894.profitableratecpmnetwork.com/aa092d5a405faa2160549129cab4e19a/invoke.js"></script>
@@ -338,7 +339,6 @@
             </div>
         </div>
 
-        <!-- 3. ALWAYS-ON-TOP CLOSE BUTTON AT BOTTOM -->
         <div class="floating-footer-action">
             <button class="btn-giant-close" onclick="closeTerminal()">
                 <i class="fa-solid fa-arrow-left"></i> BACK TO CODE EDITOR
